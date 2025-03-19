@@ -1,0 +1,28 @@
+.marquee {
+    --spacing: 5em;
+    --start: 0em;
+    --end: 5em;
+    animation: marquee 1s linear infinite;
+    animation-play-state: paused;
+    text-shadow: white var(--spacing) 0, white calc(var(--spacing) * -1) 0,
+      white calc(var(--spacing) * -2) 0;
+  }
+  
+  .marquee-button:hover .marquee {
+    animation-play-state: running;
+    opacity: 1;
+  }
+  
+  .marquee-button:hover .text {
+    opacity: 0;
+  }
+  
+  @keyframes marquee {
+    0% {
+      transform: translateX(var(--start));
+    }
+    100% {
+      transform: translateX(var(--end));
+    }
+  }
+  
