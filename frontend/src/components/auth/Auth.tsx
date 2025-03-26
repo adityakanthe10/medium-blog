@@ -2,7 +2,7 @@ import { SignupInput } from "@adityakanthe2024/complete-medium-commmon";
 import { ChangeEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { BACKEND_URL } from "../config";
+import { BACKEND_URL } from "../../config";
 
 export const Auth = ({ type }: { type: "signup" | "signin" }) => {
   const navigate = useNavigate();
@@ -51,7 +51,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
             {type === "signup" ? (
               <LabelledInput
                 label="Name"
-                placeholder="Aditya Kanthe.."
+                placeholder="Name"
                 onChange={(e) => {
                   setPostInputs({
                     ...postInputs,
@@ -62,7 +62,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
             ) : null}
             <LabelledInput
               label="Username"
-              placeholder="email"
+              placeholder="Email"
               onChange={(e) => {
                 setPostInputs({
                   ...postInputs,
@@ -73,7 +73,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
             <LabelledInput
               label="Password"
               type={"password"}
-              placeholder="password"
+              placeholder="Password"
               onChange={(e) => {
                 setPostInputs({
                   ...postInputs,
