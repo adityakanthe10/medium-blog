@@ -13,7 +13,10 @@ import { useRef, useState } from "react";
 
 // schema yup validation
 const SignupSchema = Yup.object().shape({
-  name: Yup.string().min(3, "Too short!").required("Required"),
+  name: Yup.string()
+    .min(3, "Too short!")
+    .max(15, "Too long")
+    .required("Required"),
   email: Yup.string().email("Invalid email").required("Required"),
   password: Yup.string().min(6, "Password too short!").required("Required"),
 });
