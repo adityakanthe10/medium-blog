@@ -3,15 +3,16 @@ export const Quote = () => {
     <div className="bg-slate-200 h-screen flex justify-center flex-col">
       <div className="flex justify-center">
         <div className="max-w-lg ">
-          <div className="text-3xl font-bold">
-            The customer support team that i received was exceptional. The
-            support team went beyound and above my concerns"
+          <div className="text-2xl font-bold">
+            "My biggest motivation?Just to keep challenging myself. I see life
+            almost like one long University education that I never had everyday
+            I’m learning something new."
           </div>
           <div className="max-w-md font-semibold text-xl text-left mt-4">
-            Julius Winfield
+            Richard Branson
           </div>
           <div className="max-w-md font-light text-md text-slate-400 ">
-            CEO | Acme corp
+            CEO | Virgin Group
           </div>
         </div>
       </div>

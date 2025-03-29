@@ -16,6 +16,14 @@ const app = new Hono<{
   };
 }>();
 
+enum StatusCode {
+  SUCCESS = 200,
+  BADREQ = 400,
+  NOTFOUND = 404,
+  FORBIDDEN = 403,
+  SERVERERROR = 500,
+}
+
 export const signup = async (c: Context) => {
   console.log("Signup function called");
   console.log("DATABASE_URL:", c.env.DATABASE_URL);
@@ -32,10 +40,12 @@ export const signup = async (c: Context) => {
     const { success } = signupInput.safeParse(body);
     console.log("Validation result:", success);
     if (!success) {
-      c.status(411);
-      return c.json({
-        message: "Inputs are not correct",
-      });
+      return c.json(
+        {
+          message: "Inputs are not correct",
+        },
+        StatusCode.BADREQ
+      );
     }
 
     const isUserExist = await prisma.user.findUnique({
@@ -47,7 +57,7 @@ export const signup = async (c: Context) => {
 
     if (isUserExist) {
       console.log("Email already exists");
-      return c.json({ message: "Email already exists" });
+      return c.json({ message: "Email already exists" }, StatusCode.BADREQ);
     }
 
     const response = await prisma.user.create({
@@ -64,18 +74,24 @@ export const signup = async (c: Context) => {
     const jwtToken = await sign({ id: res_id }, c.env.JWT_SECRET);
     console.log("Generated JWT Token:", jwtToken);
 
-    return c.json({
-      msg: "User created Successfully",
-      jwt: jwtToken,
-      user: {
-        userId: response.id,
-        username: response.name,
-        email: response.email,
+    return c.json(
+      {
+        msg: "User created Successfully",
+        jwt: jwtToken,
+        user: {
+          userId: response.id,
+          username: response.name,
+          email: response.email,
+        },
       },
-    });
+      StatusCode.SUCCESS
+    );
   } catch (error) {
     console.error("Error in signup:", error);
-    return c.json({ msg: "Internal Server Error", error });
+    return c.json(
+      { msg: "Internal Server Error", error },
+      StatusCode.SERVERERROR
+    );
   }
 };
 
@@ -95,10 +111,12 @@ export const signin = async (c: Context) => {
 
     const { success } = signinInput.safeParse(body);
     if (!success) {
-      c.status(411);
-      return c.json({
-        message: "Inputs are not correct",
-      });
+      return c.json(
+        {
+          message: "Inputs are not correct",
+        },
+        StatusCode.BADREQ
+      );
     }
 
     const response = await prisma.user.findUnique({
@@ -111,25 +129,31 @@ export const signin = async (c: Context) => {
 
     if (!response) {
       console.log("User does not exist");
-      return c.json({ msg: "User does not exist" });
+      return c.json({ msg: "User does not exist" }, StatusCode.NOTFOUND);
     }
 
     const userId = response.id;
     const token = await sign({ id: userId }, c.env.JWT_SECRET);
     console.log("Generated JWT Token:", token);
 
-    return c.json({
-      message: "User Logged In Successfully",
-      token: token,
-      user: {
-        jwt: token,
-        userId: response.id,
-        username: response.id,
-        email: response.email,
+    return c.json(
+      {
+        message: "User Logged In Successfully",
+        token: token,
+        user: {
+          jwt: token,
+          userId: response.id,
+          username: response.id,
+          email: response.email,
+        },
       },
-    });
+      StatusCode.SUCCESS
+    );
   } catch (error) {
     console.error("Error in signin:", error);
-    return c.json({ message: "Internal Server Error", error });
+    return c.json(
+      { message: "Internal Server Error", error },
+      StatusCode.SERVERERROR
+    );
   }
 };
