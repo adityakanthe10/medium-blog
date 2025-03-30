@@ -1,7 +1,3 @@
-// import { SignupInput } from "@adityakanthe2024/complete-medium-commmon";
-// import { ChangeEvent, useState } from "react";
-// import axios from "axios";
-// import { BACKEND_URL } from "../../config";
 import * as Yup from "yup";
 import { useAppDispatch } from "../../store/reduxhooks";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,7 +5,6 @@ import { useFormik } from "formik";
 import { signupUser } from "../../features/signup/index";
 import { Toast } from "primereact/toast";
 import { useRef, useState } from "react";
-// import { SignupInput } from "@adityakanthe2024/complete-medium-commmon";
 
 // schema yup validation
 const SignupSchema = Yup.object().shape({
@@ -81,9 +76,9 @@ export const Signupcomponent = () => {
         <div>
           <div className="px-10">
             <div className="text-3xl font-bold ">Create an account</div>
-            <div className="text-slate-500 font-medium text-center text-base">
+            <div className="text-slate-500 font-base text-center text-sm">
               Already have an account?
-              <Link className="pl-2 text-blue-800 font-medium" to={"/signin"}>
+              <Link className="pl-2 text-blue-800 font-medium" to={"/login"}>
                 Log in
               </Link>
             </div>

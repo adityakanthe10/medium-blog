@@ -34,7 +34,7 @@ const LandingNavbar = () => {
           /> */}
 
           {/* Sign In & Get Started Buttons */}
-          <Link to="/signin" className="text-gray-700 hover:text-black">
+          <Link to="/login" className="text-gray-700 hover:text-black">
             Sign In
           </Link>
           <Link to="/signup">
