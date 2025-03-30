@@ -16,12 +16,23 @@ const app = new Hono<{
   };
 }>();
 
+// enum status code
 enum StatusCode {
   SUCCESS = 200,
   BADREQ = 400,
   NOTFOUND = 404,
   FORBIDDEN = 403,
   SERVERERROR = 500,
+}
+
+// hashing password
+
+async function hashpassword(password: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
 export const signup = async (c: Context) => {
@@ -37,6 +48,7 @@ export const signup = async (c: Context) => {
       await c.req.json();
     console.log("Request Body:", body);
 
+    // input validations
     const { success } = signupInput.safeParse(body);
     console.log("Validation result:", success);
     if (!success) {
@@ -47,7 +59,7 @@ export const signup = async (c: Context) => {
         StatusCode.BADREQ
       );
     }
-
+    //  check user exists
     const isUserExist = await prisma.user.findUnique({
       where: {
         email: body.email,
@@ -60,10 +72,15 @@ export const signup = async (c: Context) => {
       return c.json({ message: "Email already exists" }, StatusCode.BADREQ);
     }
 
+    // hash the password
+    const hashPassword = await hashpassword(body.password);
+    console.log("hashpassword", hashpassword);
+
+    // create a new user
     const response = await prisma.user.create({
       data: {
         email: body.email,
-        password: body.password,
+        password: hashPassword,
         name: body.name || "Anonymous",
       },
     });
@@ -71,6 +88,7 @@ export const signup = async (c: Context) => {
 
     const res_id = response.id;
 
+    //  create jwt token
     const jwtToken = await sign({ id: res_id }, c.env.JWT_SECRET);
     console.log("Generated JWT Token:", jwtToken);
 
@@ -95,6 +113,15 @@ export const signup = async (c: Context) => {
   }
 };
 
+// verify password
+async function verifyPassword(
+  inputPassword: string,
+  storedHash: string
+): Promise<boolean> {
+  const hashedInput = await hashpassword(inputPassword);
+  return hashedInput === storedHash;
+}
+
 export const signin = async (c: Context) => {
   console.log("Signin function called");
 
@@ -109,6 +136,7 @@ export const signin = async (c: Context) => {
     const body = await c.req.json();
     console.log("Signin Request Body:", body);
 
+    // input validation
     const { success } = signinInput.safeParse(body);
     if (!success) {
       return c.json(
@@ -118,11 +146,10 @@ export const signin = async (c: Context) => {
         StatusCode.BADREQ
       );
     }
-
+    // find user by email
     const response = await prisma.user.findUnique({
       where: {
         email: body.email,
-        password: body.password,
       },
     });
     console.log("User Found:", response);
@@ -130,6 +157,16 @@ export const signin = async (c: Context) => {
     if (!response) {
       console.log("User does not exist");
       return c.json({ msg: "User does not exist" }, StatusCode.NOTFOUND);
+    }
+
+    // verify password
+    const isValidPassword = await verifyPassword(
+      body.password,
+      response.password
+    );
+
+    if (!isValidPassword) {
+      return c.json({ msg: "Invalid Credentials" }, StatusCode.BADREQ);
     }
 
     const userId = response.id;

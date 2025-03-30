@@ -29,7 +29,7 @@ export const Signincomp = () => {
       try {
         const response = await dispatch(signinUser(values)).unwrap();
         console.log(response.jwt, "response ");
-        localStorage.setItem("token", response.jwt);
+        localStorage.setItem("token", response.token);
         toastRef.current?.show({
           severity: "success",
           summary: "Login Successful",
