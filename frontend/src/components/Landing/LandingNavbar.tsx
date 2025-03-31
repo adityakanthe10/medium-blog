@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
-import "../assets/Easy_blog_logo.png";
-import { assets } from "../assets/assets";
-import MarqueeButton from "./Buttons";
+import "../../assets/Easy_blog_logo.png";
+import { assets } from "../../assets/assets";
+import MarqueeButton from ".././Buttons";
 
 const LandingNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,7 +19,7 @@ const LandingNavbar = () => {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6">
-          <Link to="/" className="text-gray-700 hover:text-black">
+          <Link to="/about" className="text-gray-700 hover:text-black">
             Our Story
           </Link>
           {/* <Link to="/" className="text-gray-700 hover:text-black">

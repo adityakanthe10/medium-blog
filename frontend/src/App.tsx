@@ -9,6 +9,7 @@ import { Publish } from "./pages/Publish";
 import { NotFound } from "./pages/NotFound";
 import Landing from "./pages/Landing";
 import AuthGuard from "./components/auth/Auth";
+import About from "./pages/About";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Landing />} />
+          <Route path="/about" element={<About />} />
           <Route path="/login" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
 
