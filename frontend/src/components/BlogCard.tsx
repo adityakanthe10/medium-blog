@@ -1,4 +1,7 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { IoIosLogOut } from "react-icons/io";
 
 interface BlogCardPress {
   authorName: string;
@@ -6,6 +9,11 @@ interface BlogCardPress {
   content: string;
   publishedDate: string;
   id: number;
+}
+
+interface AvatarProps {
+  name: string;
+  size?: "small" | "big";
 }
 
 export const BlogCard = ({
@@ -46,25 +54,42 @@ function Circle() {
   return <div className="h-1 w-1 rounded-full bg-slate-500"></div>;
 }
 
-export function Avatar({
-  name,
-  size = "small",
-}: {
-  name: string;
-  size?: "small" | "big";
-}) {
+export function Avatar({ name, size = "small" }: AvatarProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   return (
-    <div
-      className={`relative inline-flex items-center justify-center overflow-hidden bg-gray-600 rounded-full dark:bg-gray-600 ${
-        size === "small" ? "w-6 h-6" : "w-10 h-10"
-      }`}
-    >
-      <span
-        className={`${size === "small" ? "text-xs" : "text-md"} font-extralight
-        text-gray-600 dark:text-gray-300`}
+    <div className="relative">
+      <div
+        className={`relative inline-flex items-center justify-center overflow-hidden bg-gray-600 rounded-full dark:bg-gray-600 ${
+          size === "small" ? "w-6 h-6" : "w-10 h-10"
+        } cursor-pointer`}
+        onClick={() => setIsOpen(!isOpen)}
       >
-        {name[0].toUpperCase()}
-      </span>
+        <span
+          className={`${
+            size === "small" ? "text-xs" : "text-md"
+          } font-extralight
+        text-gray-600 dark:text-gray-300`}
+        >
+          {name[0].toUpperCase()}
+        </span>
+      </div>
+      {isOpen && (
+        <div className="absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg py-2 border z-10">
+          <button
+            className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 w-full"
+            onClick={handleLogout}
+          >
+            <IoIosLogOut className="mr-2" /> Logout
+          </button>
+        </div>
+      )}
     </div>
   );
 }

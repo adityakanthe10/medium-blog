@@ -1,3 +1,4 @@
+import { Appbar } from "../components/Appbar";
 import { BlogSkeleton } from "../components/BlogSkeleton";
 import { FullBlog } from "../components/FullBlog";
 import { useBlog } from "../hooks";
@@ -10,7 +11,14 @@ export const Blog = () => {
   if (loading) {
     return (
       <div>
-        <BlogSkeleton />
+        <Appbar />
+        <div className="flex justify-center">
+          <div>
+            <BlogSkeleton />
+            <BlogSkeleton />
+            <BlogSkeleton />
+          </div>
+        </div>
       </div>
     );
   }
