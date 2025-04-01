@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import { signupUser } from "../../features/signup/index";
 import { Toast } from "primereact/toast";
 import { useRef, useState } from "react";
+// import { GoogleButton } from "../buttons/GoogleButton";
 
 // schema yup validation
 const SignupSchema = Yup.object().shape({
@@ -151,6 +152,7 @@ export const Signupcomponent = () => {
                 "Sign Up"
               )}
             </button>
+            {/* <GoogleButton /> */}
           </div>
         </div>
       </div>

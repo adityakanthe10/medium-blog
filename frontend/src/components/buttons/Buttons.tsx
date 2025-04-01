@@ -1,4 +1,4 @@
-import "../assets/css/marquee.css";
+import "../../assets/css/marquee.css";
 
 const MarqueeButton = () => {
   return (

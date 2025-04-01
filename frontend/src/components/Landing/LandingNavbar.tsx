@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import "../../assets/Easy_blog_logo.png";
 import { assets } from "../../assets/assets";
-import MarqueeButton from ".././Buttons";
+import MarqueeButton from "../buttons/Buttons";
 
 const LandingNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
