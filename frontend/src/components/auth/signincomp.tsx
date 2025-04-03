@@ -7,6 +7,7 @@ import { Toast } from "primereact/toast";
 import { signinUser } from "../../features/login";
 import { signInWithGooglePopup } from "../../firebase/firebase.utils";
 import { User } from "firebase/auth";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 // Schema Validation
 const SignInSchema = Yup.object().shape({
@@ -17,6 +18,7 @@ const SignInSchema = Yup.object().shape({
 export const Signincomp = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_user, setUser] = useState<User | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -116,12 +118,12 @@ export const Signincomp = () => {
                 <p className="text-red-500 text-sm">{formik.errors.email}</p>
               )}
             </div>
-            <div className="mb-5">
+            <div className="mb-5 relative">
               <label className="block mb-2 text-sm font-semibold text-black ">
                 Password
               </label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 name="password"
                 className="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-bold"
@@ -131,6 +133,13 @@ export const Signincomp = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
+              <button
+                type="button"
+                className="absolute inset-y-12 right-3 flex items-center text-gray-600"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
               {formik.errors.password && formik.touched.password && (
                 <p className="text-red-500 text-sm">{formik.errors.password}</p>
               )}
