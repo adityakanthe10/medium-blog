@@ -60,6 +60,8 @@ export function Avatar({ name, size = "small" }: AvatarProps) {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
     navigate("/login");
   };
 

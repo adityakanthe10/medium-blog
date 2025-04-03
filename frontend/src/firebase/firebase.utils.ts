@@ -1,12 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { GoogleAuthProvider } from "firebase/auth/web-extension";
+// import { getAnalytics } from "firebase/analytics";
 import {
-  signInWithRedirect,
-  getRedirectResult,
+  signInWithPopup,
   signOut,
   getAuth,
+  GoogleAuthProvider,
 } from "firebase/auth";
 
 const firebaseConfig = {
@@ -19,11 +17,38 @@ const firebaseConfig = {
   measurementId: "G-Q9B58GFPG8",
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+// const analytics = getAnalytics(app);
 
-const auth = getAuth();
+// Initialize Firebase App
+const app = initializeApp(firebaseConfig);
+
+// Initialize Firebase Auth
+const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-export { auth, provider, signInWithRedirect, getRedirectResult, signOut };
+// Google Sign-in with Popup
+const signInWithGooglePopup = async () => {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    console.log("Google Sign-in successful:", user);
+    localStorage.setItem("user", JSON.stringify(user));
+    return user;
+  } catch (error) {
+    console.error("Google Sign-in error:", error);
+    return null;
+  }
+};
+
+// Logout function
+const logout = async () => {
+  try {
+    await signOut(auth);
+    localStorage.removeItem("user");
+    console.log("User signed out successfully");
+  } catch (error) {
+    console.error("Logout error:", error);
+  }
+};
+
+export { auth, provider, signInWithGooglePopup, logout };

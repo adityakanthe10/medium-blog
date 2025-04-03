@@ -1,6 +1,6 @@
 // import { Auth } from "../components/auth/Auth";
 import { Signincomp } from "../components/auth/signincomp";
-import { Quote } from "../components/Quote";
+import { SelfPromotion } from "../components/SelfPromotion";
 
 export const Signin = () => {
   return (
@@ -11,7 +11,7 @@ export const Signin = () => {
           <Signincomp />
         </div>
         <div className="hidden lg:block">
-          <Quote />
+          <SelfPromotion />
         </div>
       </div>
     </div>
