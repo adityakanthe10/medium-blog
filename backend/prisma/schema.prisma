@@ -14,6 +14,7 @@ model User {
   password String?
   name     String?
   photoUrl String?
+  isGoogleAuth Boolean @default(false)
   provider String?
   emailVerified Boolean @default(false)
   posts    Post[]

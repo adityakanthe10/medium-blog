@@ -72,6 +72,7 @@ export const signup = async (c: Context) => {
       console.log("Email already exists");
       return c.json({ message: "Email already exists" }, StatusCode.BADREQ);
     }
+    
 
     // hash the password
     const hashPassword = await hashpassword(body.password);
@@ -160,6 +161,12 @@ export const signin = async (c: Context) => {
       return c.json({ msg: "User does not exist" }, StatusCode.NOTFOUND);
     }
 
+    if (response.isGoogleAuth && !response.password) {
+      return c.json({
+        msg: "You signed up using Google. Please use Google login or set a password in your settings.",
+      }, StatusCode.FORBIDDEN);
+    }
+    
     // verify password
     const isValidPassword = await verifyPassword(
       body.password,
@@ -229,6 +236,7 @@ console.log("DATABASE_URL",c.env.DATABASE_URL)
           name: firebaseUser.name as string,
           photoUrl: firebaseUser.picture as string | null | undefined,
           provider: (firebaseUser.firebase as { sign_in_provider?: string | null | undefined })?.sign_in_provider,
+          isGoogleAuth:true
         }
       })
     }
@@ -241,6 +249,7 @@ console.log("DATABASE_URL",c.env.DATABASE_URL)
           name: firebaseUser.name as string | null | undefined,
           photoUrl: firebaseUser.picture as string | null | undefined,
           provider: (firebaseUser.firebase as { sign_in_provider?: string | null | undefined })?.sign_in_provider,
+          isGoogleAuth:true
         }
       })
     }
@@ -261,4 +270,33 @@ console.log("DATABASE_URL",c.env.DATABASE_URL)
   }
 }
 
+export const setpassword = async (c: Context) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
 
+  const body = await c.req.json();
+  const authHeader = c.req.header("Authorization");
+
+  const token = authHeader?.split(" ")[1];
+  if (!token) {
+    return c.json({ message: "Unauthorized" }, 401);
+  }
+
+  const decoded = await verify(token, c.env.JWT_SECRET);
+  if (!decoded?.id) {
+    return c.json({ message: "Invalid Token" }, 401);
+  }
+
+  const hashPwd = await hashpassword(body.password);
+
+  const updatedUser = await prisma.user.update({
+    where: { id: decoded.id as number },
+    data: {
+      password: hashPwd,
+      isGoogleAuth: false, // Optional: disable this if they now have a password
+    },
+  });
+
+  return c.json({ message: "Password updated successfully", user: updatedUser });
+}

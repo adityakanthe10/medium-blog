@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { Context } from "hono";
 import { sign, verify } from "hono/jwt";
-import { signup, signin, firebase } from "../controllers/user.controller";
+import { signup, signin, firebase,setpassword } from "../controllers/user.controller";
 
 const users = new Hono<{
   Bindings: {
@@ -44,6 +44,7 @@ users.use("/user", async (c, next) => {
 
 users.post("/signup", signup);
 users.post("/signin", signin);
+users.post("/setpassword",setpassword );
 users.post("/firebase",firebase)
 
 export default users;
