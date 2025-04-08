@@ -294,7 +294,7 @@ export const setpassword = async (c: Context) => {
     where: { id: decoded.id as number },
     data: {
       password: hashPwd,
-      isGoogleAuth: false, // Optional: disable this if they now have a password
+      isGoogleAuth: true, // Optional: disable this if they now have a password
     },
   });
 
