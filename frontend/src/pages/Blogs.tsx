@@ -6,22 +6,22 @@ import { BlogSkeleton } from "../components/BlogSkeleton";
 import { useBlogs } from "../hooks";
 
   // Dummy data
-  const dummyBlogs = [
-    {
-      id: 1,
-      authorName: "Aditya",
-      title: "Learning React the Right Way",
-      content: "React is a JavaScript library used to build user interfaces...",
-      publishedDate: "April 8, 2025"
-    },
-    {
-      id: 2,
-      authorName: "Jane Doe",
-      title: "Mastering CSS Grid",
-      content: "CSS Grid is a powerful 2D layout system in CSS...",
-      publishedDate: "April 6, 2025"
-    },
-  ];
+  // const dummyBlogs = [
+  //   {
+  //     id: 1,
+  //     authorName: "Aditya",
+  //     title: "Learning React the Right Way",
+  //     content: "React is a JavaScript library used to build user interfaces...",
+  //     publishedDate: "April 8, 2025"
+  //   },
+  //   {
+  //     id: 2,
+  //     authorName: "Jane Doe",
+  //     title: "Mastering CSS Grid",
+  //     content: "CSS Grid is a powerful 2D layout system in CSS...",
+  //     publishedDate: "April 6, 2025"
+  //   },
+  // ];
   
 export const Blogs = () => {
   const { loading, blogs } = useBlogs(); // ✅ Correct destructuring
