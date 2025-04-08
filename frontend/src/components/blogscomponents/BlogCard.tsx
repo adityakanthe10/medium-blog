@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { IoIosLogOut } from "react-icons/io";
+import { FiUser } from "react-icons/fi";
+import { FaRegBookmark } from "react-icons/fa";
+// import { IoIosLogOut } from "react-icons/io";
+// import { FaRegNoteSticky } from "react-icons/fa6";
 
 interface BlogCardPress {
   author: string;
@@ -93,12 +96,33 @@ export function Avatar({ name, size = "small" }: AvatarProps) {
         </span>
       </div>
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg py-2 border z-10">
+        <div className="absolute right-0 mt-3 w-50 bg-white rounded-lg shadow-md py-2 border-b-slate-500 z-10 ">
           <button
-            className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 w-full"
+            className="flex items-center px-3 py-2 text-slate-500 font-light text-sm hover:text-black w-full"
+          >
+            <FiUser className="mr-2" /> Profile
+          </button>
+          <button
+            className="flex items-center px-3 py-2 text-slate-500 font-light text-sm hover:text-black w-full"
+          >
+            <FaRegBookmark className="mr-2" /> Bookmark
+          </button>
+          <hr className="border-slate-200 " />
+          <button
+            className="flex items-center px-3 py-2 text-slate-500 font-light text-sm hover:text-black w-full"
+          >
+           Settings
+          </button>
+          {/* <button
+            className="flex items-center px-3 py-2 text-slate-500 font-light text-sm hover:text-black w-full"
+          >
+            <FaRegNoteSticky className="mr-2" /> My Blogs
+          </button> */}
+          <button
+            className="flex items-center px-3 py-2 text-slate-500 font-light text-sm hover:text-black w-full "
             onClick={handleLogout}
           >
-            <IoIosLogOut className="mr-2" /> Logout
+           Signout
           </button>
         </div>
       )}
