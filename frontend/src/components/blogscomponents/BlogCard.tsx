@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { IoIosLogOut } from "react-icons/io";
 
 interface BlogCardPress {
-  authorName: string;
+  author: string;
   title: string;
   content: string;
   publishedDate: string;
@@ -17,41 +17,50 @@ interface AvatarProps {
 }
 
 export const BlogCard = ({
-  authorName,
+  author,
   title,
   content,
   publishedDate,
   id,
 }: BlogCardPress) => {
+ console.log('name', author)
+
+  const authorName = author? author[0]?.charAt(0).toUpperCase() + author.slice(1): "NA"
+  const contents = content[0]?.charAt(0).toUpperCase() + content.slice(1,150) + " ...."
+  const capitalisedtitles =   title.split(" ")
+  .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+  .join(" ");
+
   return (
     <Link to={`/blog/${id}`}>
-      <div className="p-4 border-b border-slate-200 pb-4 w-screen max-w-screen-md cursor-pointer">
+      <div className="p-4 border-r border-slate-200 pb-4 w-full cursor-pointer lg:pr-30">
         <div className="flex">
-          <Avatar name={authorName} />
-          <div className="font-extralight pl-2 text-sm flex justify-center flex-col">
-            {authorName}
-          </div>
-          <div className="flex justify-center flex-col pl-2">
+          <Avatar name={author} />
+          <div className="flex justify-center items-center flex-col pl-2">
             <Circle />
+          </div>
+          <div className="font-extralight pl-2 text-xs flex justify-center item-center flex-col">
+            {authorName}
           </div>
           <div className="pl-2 font-thin text-slate-500 text-sm flex justify-center flex-col">
             {publishedDate}
           </div>
         </div>
-        <div className="text-xl font-semibold pt-2">{title}</div>
-        <div className="text-md font-thin">
-          {content.slice(0, 100) + " ...."}
+        <div className="text-xl font-semibold pt-2">{capitalisedtitles}</div>
+        <div className="text-md font-extralight">
+          {contents}
         </div>
         <div className="w-full text-slate-500 font-thin pt-4">{`${Math.ceil(
           content.length / 100
         )} minutes(s) read`}</div>
+        <div className="border-b border-slate-200 "> </div>
       </div>
     </Link>
   );
 };
 
 function Circle() {
-  return <div className="h-1 w-1 rounded-full bg-slate-500"></div>;
+  return <div className="h-1 w-1 rounded-full bg-slate-300"></div>;
 }
 
 export function Avatar({ name, size = "small" }: AvatarProps) {
@@ -65,11 +74,12 @@ export function Avatar({ name, size = "small" }: AvatarProps) {
     navigate("/login");
   };
 
+  const initial = name?.[0].toUpperCase() || "A";
   return (
     <div className="relative">
       <div
-        className={`relative inline-flex items-center justify-center overflow-hidden bg-gray-600 rounded-full dark:bg-gray-600 ${
-          size === "small" ? "w-6 h-6" : "w-10 h-10"
+        className={`relative inline-flex items-center justify-center overflow-hidden bg-gray-400 rounded-full dark:bg-gray-600 ${
+          size === "small" ? "w-4 h-4" : "w-10 h-10"
         } cursor-pointer`}
         onClick={() => setIsOpen(!isOpen)}
       >
@@ -77,9 +87,9 @@ export function Avatar({ name, size = "small" }: AvatarProps) {
           className={`${
             size === "small" ? "text-xs" : "text-md"
           } font-extralight
-        text-gray-600 dark:text-gray-300`}
+        text-gray-200 dark:text-gray-200`}
         >
-          {name[0].toUpperCase()}
+          {initial}
         </span>
       </div>
       {isOpen && (

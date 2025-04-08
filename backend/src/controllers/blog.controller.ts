@@ -36,6 +36,7 @@ export const createBlog = async (c: Context) => {
     msg: "blog created successfully",
   });
 };
+
 export const updateBlog = async (c: Context) => {
   const body = await c.req.json();
 

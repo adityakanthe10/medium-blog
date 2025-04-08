@@ -8,6 +8,7 @@ import { signinUser } from "../../features/login";
 import { signInWithGooglePopup } from "../../firebase/firebase.utils";
 import { User } from "firebase/auth";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import axios from "axios";
 
 // Schema Validation
 const SignInSchema = Yup.object().shape({
@@ -69,18 +70,58 @@ export const Signincomp = () => {
 
   // Handle Google Sign-in
   const handleGoogleSignIn = async () => {
-    const user = await signInWithGooglePopup();
-    if (user) {
-      setUser(user);
+    try {
+      const firebaseUser = await signInWithGooglePopup();
+  
+      if (!firebaseUser) {
+        throw new Error("Firebase sign-in failed");
+      }
+  
+      const token = await firebaseUser.getIdToken();
+      console.log("Firebase token:", token);
+  
+      const response = await axios.post(
+        "https://backend.adityakanthe10.workers.dev/api/v1/user/firebase",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      // ✅ Only store JWT if everything went well
+      if (response?.data?.token) {
+        localStorage.setItem("token", response.data.token);
+  
+        toastRef.current?.show({
+          severity: "success",
+          summary: "Login Successful",
+          detail: `Welcome ${firebaseUser.displayName}`,
+          life: 3000,
+        });
+
+        // ✅ All good, navigate now
+        setTimeout(() => navigate("/blogs"), 1000); // ✅ Delays navigation so toast can show
+
+      } else {
+        throw new Error("Token not received from backend");
+      }
+    } catch (error) {
+      console.error("Google Sign-In Error:", error);
+  
+      // ❌ Ensure token is not saved if anything fails
+      localStorage.removeItem("token");
+  
       toastRef.current?.show({
-        severity: "success",
-        summary: "Login Successful",
-        detail: `Welcome ${user.displayName}`,
+        severity: "error",
+        summary: "Login Failed",
+        detail: (error instanceof Error ? error.message : "Google Sign-in Failed"),
         life: 3000,
       });
-      navigate("/blogs");
     }
   };
+  
 
   return (
     <form

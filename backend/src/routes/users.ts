@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { Context } from "hono";
 import { sign, verify } from "hono/jwt";
-import { signup, signin } from "../controllers/user.controller";
+import { signup, signin, firebase } from "../controllers/user.controller";
 
 const users = new Hono<{
   Bindings: {
@@ -11,6 +11,12 @@ const users = new Hono<{
 }>();
 
 users.use("/user", async (c, next) => {
+
+  const path = c.req.path;
+  if(["/signup","/login", "/firebase"].includes(path)) { 
+    return next();
+  }
+
   try {
     const header = c.req.header("authorization") || "";
     console.log("Authorization Header:", header);
@@ -38,5 +44,6 @@ users.use("/user", async (c, next) => {
 
 users.post("/signup", signup);
 users.post("/signin", signin);
+users.post("/firebase",firebase)
 
 export default users;

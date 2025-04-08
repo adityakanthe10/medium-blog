@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
-import { Avatar } from "./BlogCard";
+import { Avatar } from "./blogscomponents/BlogCard";
 import { assets } from "../assets/assets";
 
 export const Appbar = () => {
   return (
-    <div className="border-b flex justify-between px-10 py-4">
+    <div className="border-slate-100 border-b flex justify-between px-10 py-2">
       <Link to={"/blogs"}>
         <div className="flex flex-col justify-center items-center cursor-pointer">
-          <img src={assets.logo} className="h-10 " />
+          <img src={assets.logo} className="h-10" />
         </div>
       </Link>
       <div className="flex">

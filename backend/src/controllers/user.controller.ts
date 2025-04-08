@@ -8,6 +8,7 @@ import {
   signupInput,
   signinInput,
 } from "@adityakanthe2024/complete-medium-commmon";
+import { verifyIdToken } from "../lib/firebase.utils";
 
 const app = new Hono<{
   Bindings: {
@@ -162,7 +163,7 @@ export const signin = async (c: Context) => {
     // verify password
     const isValidPassword = await verifyPassword(
       body.password,
-      response.password
+      response.password as string
     );
 
     if (!isValidPassword) {
@@ -194,3 +195,70 @@ export const signin = async (c: Context) => {
     );
   }
 };
+
+export const firebase = async (c: Context) => {
+  console.log("Firebase function called");
+  console.log(c.env.JWT_SECRET,"jwt secret", )
+console.log("DATABASE_URL",c.env.DATABASE_URL)
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+  try {
+  
+    // console.log("Database connected successfully");
+    const authHeader = c.req.header("Authorization");
+    const idToken = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : null;
+
+
+    // const { idToken } = await c.req.json()
+    if (!idToken) {
+      return c.json({ message: 'Unauthorized Firebase Login: Missing Token' }, 401);
+    }
+    const firebaseUser = await verifyIdToken(idToken);
+    console.log("Decoded Firebase User:", firebaseUser)
+
+    let user = await prisma.user.findUnique({
+      where: { email: firebaseUser.email as string }
+    })
+
+    if (user && !user.firebaseUid) {
+      user = await prisma.user.update({
+        where: { email: firebaseUser.email as string },
+        data: {
+          firebaseUid: firebaseUser.user_id as string,
+          name: firebaseUser.name as string,
+          photoUrl: firebaseUser.picture as string | null | undefined,
+          provider: (firebaseUser.firebase as { sign_in_provider?: string | null | undefined })?.sign_in_provider,
+        }
+      })
+    }
+
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          firebaseUid: firebaseUser.user_id as string | null | undefined,
+          email: (firebaseUser.email as string) ?? "default@example.com",
+          name: firebaseUser.name as string | null | undefined,
+          photoUrl: firebaseUser.picture as string | null | undefined,
+          provider: (firebaseUser.firebase as { sign_in_provider?: string | null | undefined })?.sign_in_provider,
+        }
+      })
+    }
+    const userId = user.id
+
+    const token = await sign({ id: userId },c.env.JWT_SECRET)
+    // const token = await sign({ id: userId }, c.env.JWT_SECRET);
+    console.log("Generated JWT Token:", token);
+    return c.json({
+      message: 'Firebase login successful',
+      token,
+      user,
+    })
+
+  } catch (error) {
+    console.error("Firebase login error", error)
+    return c.json({ message: 'Unauthorized Firebase Login' }, 401)
+  }
+}
+
+
