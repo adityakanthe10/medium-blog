@@ -24,18 +24,6 @@ export const Publish = () => {
       <div className="flex justify-center w-full pt-8">
         <div className="max-w-screen-lg w-full">
         <BlogEditor onChange={handleChange} />
-          {/* <input
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
-            className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
-            placeholder="Title"
-          />
-          <TextEditor
-            onChange={(e) => {
-              setDescription(e.target.value);
-            }}
-          /> */}
           <button
             onClick={async () => {
               const response = await axios.post(
