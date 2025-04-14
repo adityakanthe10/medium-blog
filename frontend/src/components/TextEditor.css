@@ -1,0 +1,139 @@
+/* editorStyles.css */
+
+.tiptap-editor h1 {
+    font-size: 2.25rem; /* text-3xl */
+    font-weight: 700; /* font-bold */
+    margin-bottom: 1rem;
+  }
+  
+  .tiptap-editor h2 {
+    font-size: 1.875rem; /* text-2xl */
+    font-weight: 600; /* font-semibold */
+    margin-bottom: 0.75rem;
+  }
+  
+  .tiptap-editor h3 {
+    font-size: 1.5rem; /* text-xl */
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .tiptap-editor p {
+    margin-bottom: 0rem;
+    line-height: 1.75;
+  }
+  
+  /* .tiptap-editor img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+    margin: 1rem 0;
+  }
+   */
+  .tiptap-editor pre {
+    background-color: #f3f4f6; /* Tailwind gray-100 */
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    font-size: 0.875rem; /* text-sm */
+    margin-bottom: 1rem;
+  }
+  
+  .tiptap-editor hr {
+    border: none;
+    border-top: 1px solid #e5e7eb; /* gray-200 */
+    margin: 1.5rem 0;
+  }
+  
+  /* TextEditor.css */
+.tiptap-editor {
+    min-height: 300px;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+    line-height: 1.5;
+  }
+  
+  .tiptap-editor ul {
+    list-style-type: disc;
+    margin-left: 1.5rem;
+  }
+  
+  .tiptap-editor ol {
+    list-style-type: decimal;
+    margin-left: 1.5rem;
+  }
+  
+  .tiptap-editor blockquote {
+    border-left: 4px solid #ccc;
+    padding-left: 1rem;
+    color: #555;
+    margin: 1rem 0;
+    font-style: italic;
+    background-color: #f9f9f9;
+  }
+  
+  .tiptap-editor pre {
+    background-color: #f4f4f4;
+    padding: 1rem;
+    border-radius: 5px;
+    overflow-x: auto;
+  }
+  
+  .tiptap-editor h1, .tiptap-editor h2, .tiptap-editor h3 {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .tiptap-editor input[type="checkbox"] {
+    margin-right: 0.5rem;
+  }
+  
+/* Image Loader Styles */
+.image-loader-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    background-color: #f8f9fa;
+    border: 1px dashed #dee2e6;
+    border-radius: 4px;
+    margin: 1rem 0;
+    padding: 1rem;
+  }
+  
+  .image-loader-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top-color: #3498db;
+    animation: spin 1s ease-in-out infinite;
+  }
+  
+  .image-loader-text {
+    margin-left: 1rem;
+    color: #6c757d;
+    font-size: 0.875rem;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  /* Make sure images in the editor are responsive */
+  .tiptap-editor img,
+  .tiptap-editor .loading-img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* .tiptap-editor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+   */

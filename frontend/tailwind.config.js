@@ -1,11 +1,9 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx,mdx}",
-    "node_modules/primereact/**/*.{js,ts,jsx,tsx}",
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
+export const content = [
+  "./src/**/*.{js,jsx,ts,tsx,mdx}",
+  "node_modules/primereact/**/*.{js,ts,jsx,tsx}",
+];
+export const theme = {
+  extend: {},
 };
+export const plugins = [require('@tailwindcss/typography')];
