@@ -27,4 +27,15 @@ model Post {
   id        Int     @id @default(autoincrement())
   authorId  Int
   author    User    @relation(fields: [authorId], references: [id])
+  meta PostMeta?
+}
+
+model PostMeta {
+  id Int @id @default(autoincrement())
+  title String
+  subtitle     String?
+  tags         String[]  // or have a Tag table
+  previewImage String?
+  postId       Int    @unique
+  post         Post   @relation(fields: [postId], references: [id])
 }
