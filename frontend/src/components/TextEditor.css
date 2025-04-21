@@ -131,9 +131,8 @@
     height: auto;
   }
   
-  /* .tiptap-editor {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-   */
+  
+  /* Custom toast styling to ensure it's above the modal */
+.p-toast {
+  z-index: 9999 !important;
+}

@@ -37,8 +37,8 @@ async function hashpassword(password: string): Promise<string> {
 }
 
 export const signup = async (c: Context) => {
-  console.log("Signup function called");
-  console.log("DATABASE_URL:", c.env.DATABASE_URL);
+  // console.log("Signup function called");
+  // console.log("DATABASE_URL:", c.env.DATABASE_URL);
 
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
@@ -47,11 +47,11 @@ export const signup = async (c: Context) => {
   try {
     const body: { email: string; password: string; name?: string } =
       await c.req.json();
-    console.log("Request Body:", body);
+    // console.log("Request Body:", body);
 
     // input validations
     const { success } = signupInput.safeParse(body);
-    console.log("Validation result:", success);
+    // console.log("Validation result:", success);
     if (!success) {
       return c.json(
         {
@@ -66,17 +66,17 @@ export const signup = async (c: Context) => {
         email: body.email,
       },
     });
-    console.log("User Exist Check:", isUserExist);
+    // console.log("User Exist Check:", isUserExist);
 
     if (isUserExist) {
-      console.log("Email already exists");
+      // console.log("Email already exists");
       return c.json({ message: "Email already exists" }, StatusCode.BADREQ);
     }
     
 
     // hash the password
     const hashPassword = await hashpassword(body.password);
-    console.log("hashpassword", hashpassword);
+    // console.log("hashpassword", hashpassword);
 
     // create a new user
     const response = await prisma.user.create({
@@ -86,13 +86,13 @@ export const signup = async (c: Context) => {
         name: body.name || "Anonymous",
       },
     });
-    console.log("User Created:", response);
+    // console.log("User Created:", response);
 
     const res_id = response.id;
 
     //  create jwt token
     const jwtToken = await sign({ id: res_id }, c.env.JWT_SECRET);
-    console.log("Generated JWT Token:", jwtToken);
+    // console.log("Generated JWT Token:", jwtToken);
 
     return c.json(
       {
@@ -107,7 +107,7 @@ export const signup = async (c: Context) => {
       StatusCode.SUCCESS
     );
   } catch (error) {
-    console.error("Error in signup:", error);
+    // console.error("Error in signup:", error);
     return c.json(
       { msg: "Internal Server Error", error },
       StatusCode.SERVERERROR
@@ -125,7 +125,7 @@ async function verifyPassword(
 }
 
 export const signin = async (c: Context) => {
-  console.log("Signin function called");
+  // console.log("Signin function called");
 
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
@@ -133,10 +133,10 @@ export const signin = async (c: Context) => {
 
   try {
     await prisma.$connect();
-    console.log("Database connected successfully");
+    // console.log("Database connected successfully");
 
     const body = await c.req.json();
-    console.log("Signin Request Body:", body);
+    // console.log("Signin Request Body:", body);
 
     // input validation
     const { success } = signinInput.safeParse(body);
@@ -154,10 +154,10 @@ export const signin = async (c: Context) => {
         email: body.email,
       },
     });
-    console.log("User Found:", response);
+    // console.log("User Found:", response);
 
     if (!response) {
-      console.log("User does not exist");
+      // console.log("User does not exist");
       return c.json({ msg: "User does not exist" }, StatusCode.NOTFOUND);
     }
 
@@ -179,7 +179,7 @@ export const signin = async (c: Context) => {
 
     const userId = response.id;
     const token = await sign({ id: userId }, c.env.JWT_SECRET);
-    console.log("Generated JWT Token:", token);
+    // console.log("Generated JWT Token:", token);
 
     return c.json(
       {
@@ -204,9 +204,9 @@ export const signin = async (c: Context) => {
 };
 
 export const firebase = async (c: Context) => {
-  console.log("Firebase function called");
-  console.log(c.env.JWT_SECRET,"jwt secret", )
-console.log("DATABASE_URL",c.env.DATABASE_URL)
+//   console.log("Firebase function called");
+//   console.log(c.env.JWT_SECRET,"jwt secret", )
+// console.log("DATABASE_URL",c.env.DATABASE_URL)
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
@@ -222,7 +222,7 @@ console.log("DATABASE_URL",c.env.DATABASE_URL)
       return c.json({ message: 'Unauthorized Firebase Login: Missing Token' }, 401);
     }
     const firebaseUser = await verifyIdToken(idToken);
-    console.log("Decoded Firebase User:", firebaseUser)
+    // console.log("Decoded Firebase User:", firebaseUser)
 
     let user = await prisma.user.findUnique({
       where: { email: firebaseUser.email as string }
@@ -257,7 +257,7 @@ console.log("DATABASE_URL",c.env.DATABASE_URL)
 
     const token = await sign({ id: userId },c.env.JWT_SECRET)
     // const token = await sign({ id: userId }, c.env.JWT_SECRET);
-    console.log("Generated JWT Token:", token);
+    // console.log("Generated JWT Token:", token);
     return c.json({
       message: 'Firebase login successful',
       token,

@@ -31,8 +31,9 @@ const signInWithGooglePopup = async () => {
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
-    console.log("Google Sign-in successful:", user);
+    // console.log("Google Sign-in successful:", user);
     localStorage.setItem("user", JSON.stringify(user));
+    
     return user;
   } catch (error) {
     console.error("Google Sign-in error:", error);
@@ -45,7 +46,7 @@ const logout = async () => {
   try {
     await signOut(auth);
     localStorage.removeItem("user");
-    console.log("User signed out successfully");
+    // console.log("User signed out successfully");
   } catch (error) {
     console.error("Logout error:", error);
   }

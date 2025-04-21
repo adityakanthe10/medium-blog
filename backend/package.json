@@ -5,7 +5,7 @@
     "deploy": "wrangler deploy --minify"
   },
   "dependencies": {
-    "@adityakanthe2024/complete-medium-commmon": "^1.0.0",
+    "@adityakanthe2024/complete-medium-commmon": "^1.0.2",
     "@adityakanthe2024/final-medium-commmon": "^1.0.0",
     "@adityakanthe2024/medium-commmon": "^1.0.0",
     "@prisma/client": "^6.5.0",

@@ -21,7 +21,7 @@ export const signupUser = createAsyncThunk(
       localStorage.setItem("token", response.token);
       return response;
     } catch (error: unknown) {
-      console.log("error slice", error);
+      // console.log("error slice", error);
       if (error instanceof Error) {
         return rejectWithValue(error.message);
       }

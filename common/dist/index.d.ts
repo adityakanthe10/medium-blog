@@ -25,12 +25,21 @@ export declare const signinInput: z.ZodObject<{
 export declare const createBlogInput: z.ZodObject<{
     title: z.ZodString;
     content: z.ZodString;
+    previewImage: z.ZodOptional<z.ZodString>;
+    subtitle: z.ZodOptional<z.ZodString>;
+    tags: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
 }, "strip", z.ZodTypeAny, {
     title: string;
     content: string;
+    previewImage?: string | undefined;
+    subtitle?: string | undefined;
+    tags?: string[] | undefined;
 }, {
     title: string;
     content: string;
+    previewImage?: string | undefined;
+    subtitle?: string | undefined;
+    tags?: string[] | undefined;
 }>;
 export declare const updateBlogPost: z.ZodObject<{
     title: z.ZodString;

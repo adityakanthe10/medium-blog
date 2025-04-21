@@ -8,34 +8,36 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  firebaseUid String? @unique 
-  email    String  @unique
-  password String?
-  name     String?
-  photoUrl String?
-  isGoogleAuth Boolean @default(false)
-  provider String?
+  id            Int     @id @default(autoincrement())
+  firebaseUid   String? @unique
+  email         String  @unique
+  password      String?
+  name          String?
+  photoUrl      String?
+  isGoogleAuth  Boolean @default(false)
+  provider      String?
   emailVerified Boolean @default(false)
-  posts    Post[]
+  posts         Post[]
 }
 
 model Post {
-  title     String
-  content   String
-  published Boolean @default(false)
-  id        Int     @id @default(autoincrement())
-  authorId  Int
-  author    User    @relation(fields: [authorId], references: [id])
-  meta PostMeta?
+  id          Int       @id @default(autoincrement())
+  title       String
+  content     String
+  published   Boolean   @default(false)
+  authorId    Int
+  publishedAt DateTime? @default(now())
+  createdAt   DateTime  @default(now())
+  author      User      @relation(fields: [authorId], references: [id])
+  meta        PostMeta?
 }
 
 model PostMeta {
-  id Int @id @default(autoincrement())
-  title String
+  id           Int      @id @default(autoincrement())
+  title        String
   subtitle     String?
-  tags         String[]  // or have a Tag table
+  tags         String[] // or have a Tag table
   previewImage String?
-  postId       Int    @unique
-  post         Post   @relation(fields: [postId], references: [id])
+  postId       Int      @unique
+  post         Post     @relation(fields: [postId], references: [id])
 }

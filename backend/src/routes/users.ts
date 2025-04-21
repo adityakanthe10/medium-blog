@@ -19,19 +19,19 @@ users.use("/user", async (c, next) => {
 
   try {
     const header = c.req.header("authorization") || "";
-    console.log("Authorization Header:", header);
+    // console.log("Authorization Header:", header);
 
     const token = header.split(" ")[1];
-    console.log("Extracted Token:", token);
+    // console.log("Extracted Token:", token);
 
     const verifiedToken = await verify(token, c.env.JWT_SECRET);
-    console.log("Verified Token:", verifiedToken);
+    // console.log("Verified Token:", verifiedToken);
 
     if (verifiedToken.id) {
-      console.log("Token verification successful");
+      // console.log("Token verification successful");
       await next();
     } else {
-      console.log("Unauthorized access");
+      // console.log("Unauthorized access");
       c.status(403);
       return c.json({ error: "unauthorized" });
     }

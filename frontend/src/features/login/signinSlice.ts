@@ -21,7 +21,7 @@ export const signinUser = createAsyncThunk(
   async (data: SigninInput, { rejectWithValue }) => {
     try {
       const response = await signinAPI(data);
-      console.log(response, "response slice");
+      // console.log(response, "response slice");
       localStorage.setItem("token", response.token);
       return response;
     } catch (error: unknown) {

@@ -23,6 +23,7 @@ export const Signupcomponent = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
+  const [googleLoading,setgoogleLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const toastRef = useRef<Toast>(null);
@@ -47,7 +48,7 @@ export const Signupcomponent = () => {
       setLoading(true);
       try {
         const response = await dispatch(signupUser(values)).unwrap();
-        console.log(response.jwt, "response ");
+        // console.log(response.jwt, "response ");
         localStorage.setItem("token", response.jwt);
         toastRef.current?.show({
           severity: "success",
@@ -82,6 +83,7 @@ export const Signupcomponent = () => {
 
   // Handle Google Sign-in
   const handleGoogleSignIn = async () => {
+    setgoogleLoading(true);
     try {
       const firebaseUser = await signInWithGooglePopup();
   
@@ -90,7 +92,7 @@ export const Signupcomponent = () => {
       }
   
       const token = await firebaseUser.getIdToken();
-      console.log("Firebase token:", token);
+      // console.log("Firebase token:", token);
   
       const response = await axios.post(
         "https://backend.adityakanthe10.workers.dev/api/v1/user/firebase",
@@ -130,6 +132,8 @@ export const Signupcomponent = () => {
         detail: (error instanceof Error ? error.message : "Google Sign-in Failed"),
         life: 3000,
       });
+    }finally {
+      setgoogleLoading(false);
     }
   };
   return (
@@ -226,7 +230,10 @@ export const Signupcomponent = () => {
               type="button"
               onClick={handleGoogleSignIn}
               className="w-full flex items-center justify-center bg-white border border-gray-300 rounded-lg shadow-md max-w-xs mx-2 px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-            >
+            >{googleLoading ? (
+              <div className="w-5 h-5 border-4 border-t-slate-600 border-gray-300 rounded-full animate-spin text-center"></div>
+            ) : (
+              <>
               <svg
                 className="h-6 w-6 "
                 xmlns="http://www.w3.org/2000/svg"
@@ -282,6 +289,8 @@ export const Signupcomponent = () => {
                 </g>
               </svg>
               <span className="px-2"> Signup with Google</span>
+              </>
+            )}
             </button>
           </div>
         </div>

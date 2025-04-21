@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@adityakanthe2024/complete-medium-commmon": "^1.0.0",
+    "@adityakanthe2024/complete-medium-commmon": "^1.0.1",
     "@cloudinary/react": "^1.14.1",
     "@cloudinary/url-gen": "^1.21.0",
     "@reduxjs/toolkit": "^2.6.1",
@@ -25,8 +25,11 @@
     "@tiptap/starter-kit": "^2.11.7",
     "@types/react-redux": "^7.1.34",
     "axios": "^1.8.3",
+    "dompurify": "^3.2.5",
     "firebase": "^11.6.0",
     "formik": "^2.4.6",
+    "lucide-react": "^0.488.0",
+    "moment": "^2.30.1",
     "primeicons": "^7.0.0",
     "primereact": "^10.9.3",
     "react": "^19.0.0",

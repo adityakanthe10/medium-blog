@@ -2,27 +2,9 @@
 import { Appbar } from "../components/Appbar";
 import { BlogCard } from "../components/blogscomponents/BlogCard";
 import { RecentBlogs } from "../components/blogscomponents/RecentBlogsCard";
-import { BlogSkeleton } from "../components/BlogSkeleton";
+import { BlogSkeleton, RecentBlogsSkeleton } from "../components/BlogSkeleton";
 import { useBlogs } from "../hooks";
 
-  // Dummy data
-  // const dummyBlogs = [
-  //   {
-  //     id: 1,
-  //     authorName: "Aditya",
-  //     title: "Learning React the Right Way",
-  //     content: "React is a JavaScript library used to build user interfaces...",
-  //     publishedDate: "April 8, 2025"
-  //   },
-  //   {
-  //     id: 2,
-  //     authorName: "Jane Doe",
-  //     title: "Mastering CSS Grid",
-  //     content: "CSS Grid is a powerful 2D layout system in CSS...",
-  //     publishedDate: "April 6, 2025"
-  //   },
-  // ];
-  
 export const Blogs = () => {
   const { loading, blogs } = useBlogs(); // ✅ Correct destructuring
 
@@ -30,43 +12,52 @@ export const Blogs = () => {
     return (
       <div>
         <Appbar />
-        <div className="flex justify-center">
-          <div>
+        <div className="min-h-screen px-4 py-6">
+          <div className="overflow-hidden">
+          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 ">
+            {/* <div className="flex justify-center"> */}
+            <div className="lg:col-span-4 space-y-10">
             <BlogSkeleton />
-            <BlogSkeleton />
-            <BlogSkeleton />
+            </div>
+            <RecentBlogsSkeleton />
           </div>
+        </div>
         </div>
       </div>
     );
   }
 
-console.log(blogs, "blogs");
+  // console.log(blogs, "blogs");
   return (
     <div>
       <Appbar />
-    <div className="min-h-screen px-4 py-6">
-    <div className="overflow-hidden">
+      <div className="min-h-screen px-4 py-6">
+        <div className="overflow-hidden">
+          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 ">
+            {/* Main blog section */}
+            <div className="lg:col-span-4 space-y-10">
+              {blogs.map((blog) => (
+                <BlogCard
+                  key={blog.id}
+                  id={blog.id}
+                  author={blog.author?.name}
+                  title={blog.title}
+                  subtitle={blog.meta?.subtitle}
+                  content={blog.content}
+                  previewImage={blog.meta?.previewimage}
+                  createdAt={blog.createdAt}
+                  publishedDate={blog.publishedDate}
+                  meta={
+                    blog.meta || { subtitle: "", previewimage: "", tags: [] }
+                  } // Provide a default value for 'meta'
+                />
+              ))}
+            </div>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 ">
-        {/* Main blog section */}
-        <div className="lg:col-span-4 space-y-10">
-          {blogs.map((blog) => (
-            <BlogCard
-              key={blog.id}
-              id={blog.id}
-             author={blog.author?.name}
-              title={blog.title}
-              content={blog.content}
-              publishedDate={blog.publishedDate}
-            />
-          ))}
+            {/* Sidebar */}
+            <RecentBlogs />
+          </div>
         </div>
-
-        {/* Sidebar */}
-        <RecentBlogs />
-      </div>
-      </div>
       </div>
     </div>
   );

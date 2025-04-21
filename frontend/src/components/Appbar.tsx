@@ -20,7 +20,7 @@ export const Appbar = () => {
           </button>
         </Link>
 
-        <Avatar size={"big"} name={"aditya"} />
+        <Avatar size={"big"} name={"user"} />
       </div>
     </div>
   );

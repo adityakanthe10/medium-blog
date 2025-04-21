@@ -8,9 +8,15 @@ export interface Blog {
   content: string;
   title: string;
   id: number;
+  createdAt: string;
   author: {
     name: string;
   };
+  meta?: {
+    subtitle: string;
+    previewimage: string;
+    tags: string[];
+  }; 
   publishedDate: string; // ✅ Added publishedDate field
 }
 
@@ -27,7 +33,7 @@ export const useBlog = ({ id }: { id: string }) => {
           },
         })
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           setBlog(response.data.blog);
           setLoading(false);
         });
