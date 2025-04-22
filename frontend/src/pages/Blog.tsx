@@ -1,8 +1,8 @@
+import { useParams } from "react-router-dom";
 import { Appbar } from "../components/Appbar";
-import { BlogSkeleton } from "../components/BlogSkeleton";
+import { FullBlogLeftSkeletonLoader, FullBlogRightSkeletonLoader } from "../components/BlogSkeleton";
 import { FullBlog } from "../components/FullBlog/FullBlog";
 import { useBlog } from "../hooks";
-import { useParams } from "react-router-dom";
 
 export const Blog = () => {
   const { id } = useParams();
@@ -12,21 +12,24 @@ export const Blog = () => {
     return (
       <div>
         <Appbar />
-        <div className="flex justify-center">
-          <div>
-            <BlogSkeleton />
-            <BlogSkeleton />
-            <BlogSkeleton />
+        <div>
+          <div className="grid grid-cols-12 px-10 w-full max-w-screen-2xl pt-12">
+            <div className="col-span-8">
+              <FullBlogLeftSkeletonLoader />
+            </div>
+            <div className="col-span-4">
+              <FullBlogRightSkeletonLoader />
+            </div>
           </div>
         </div>
       </div>
     );
   }
 
-  // Ensure blog is defined before rendering FullBlog
   if (!blog) {
     return <div>Error: Blog not found</div>;
   }
+
   return (
     <div>
       <FullBlog blog={blog} />

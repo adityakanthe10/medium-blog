@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FiUser } from "react-icons/fi";
-import { FaRegBookmark } from "react-icons/fa";
+// import { FiUser } from "react-icons/fi";
+// import { FaRegBookmark } from "react-icons/fa";
 import moment from "moment";
 
 interface BlogCardPress {
@@ -31,8 +31,6 @@ export const BlogCard = ({
   author,
   title,
   subtitle,
-  // createdAt,
-  // previewImage,
   content,
   publishedDate,
   meta,
@@ -49,7 +47,8 @@ export const BlogCard = ({
     .join(" ");
   const formattedPublishedDate = moment(publishedDate).format("MMMM D, YYYY");
   const trimpreviewImage = meta?.previewImage?.trim();
-
+  const wordCount = content.trim().split(/\s+/).length;
+  const readTime = Math.ceil(wordCount / 100);
   // console.log("previewImage", previewImage);
   // console.log("previewImage", meta?.previewImage);
   return (
@@ -81,7 +80,7 @@ export const BlogCard = ({
             ) : (
               <img
                 src="https://res.cloudinary.com/dr7nw3u0l/image/upload/v1745251411/7093768168_femjhl.jpg"
-                alt="Placeholder"
+                alt="N/A"
                 className="w-40 h-40 object-cover rounded-lg"
               />
             )}
@@ -95,7 +94,7 @@ export const BlogCard = ({
             </div>
             {/* <div className="text-md font-extralight">{contents}</div> */}
             <div className="w-full text-slate-500 font-thin pt-4 flex items-center space-x-2 text-sm">
-              <span>{`${Math.ceil(content.length / 100)} min read`}</span>
+              <span>{`${readTime} min read`}</span>
               <span className="h-1 w-1 rounded-full bg-slate-400"></span>
               <span>{formattedPublishedDate}</span>
             </div>
@@ -143,7 +142,7 @@ export function Avatar({ name, size = "small" }: AvatarProps) {
       </div>
       {isOpen && (
         <div className="absolute right-0 mt-3 w-50 bg-white rounded-lg shadow-md py-2 border-b-slate-500 z-10 ">
-          <button className="flex items-center px-3 py-2 text-slate-500 font-light text-sm hover:text-black w-full">
+          {/* <button className="flex items-center px-3 py-2 text-slate-500 font-light text-sm hover:text-black w-full">
             <FiUser className="mr-2" /> Profile
           </button>
           <button className="flex items-center px-3 py-2 text-slate-500 font-light text-sm hover:text-black w-full">
@@ -152,13 +151,21 @@ export function Avatar({ name, size = "small" }: AvatarProps) {
           <hr className="border-slate-200 " />
           <button className="flex items-center px-3 py-2 text-slate-500 font-light text-sm hover:text-black w-full">
             Settings
+          </button> */}
+          <Link to={`/blogs`}>
+          <button
+            className="flex items-center px-3 py-2 text-slate-500 font-light text-sm hover:text-black w-full "
+          >
+            Main Page
           </button>
+          </Link>
           <button
             className="flex items-center px-3 py-2 text-slate-500 font-light text-sm hover:text-black w-full "
             onClick={handleLogout}
           >
             Signout
           </button>
+          
         </div>
       )}
     </div>

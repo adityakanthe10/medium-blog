@@ -1,9 +1,11 @@
-
+import { useState } from "react";
 import { Appbar } from "../components/Appbar";
 import BlogEditor from "../components/TextEditor";
 
 // Component to handle blog publishing
 export const Publish = () => {
+  const [, setBlogContent] = useState<{ title: string; content: string }>({ title: "", content: "" });
+
   return (
     <div>
       <Appbar /> {/* Top Navigation Bar */}
@@ -12,7 +14,7 @@ export const Publish = () => {
           {/* Blog text editor component */}
           <BlogEditor
             onChange={(data) => {
-              console.log("Blog data:", data);
+              setBlogContent(data); // Update blog content state on change
             }}
           />
         </div>

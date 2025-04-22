@@ -4,6 +4,7 @@ import {
   updateBlog,
   getBlogById,
   getAllBlogById,
+  getRecentBlogs
 } from "../controllers/blog.controller";
 import { verify } from "hono/jwt";
 
@@ -50,5 +51,6 @@ blogs.post("/blog", createBlog);
 blogs.put("/blog", updateBlog);
 blogs.get("/blog/bulk", getAllBlogById);
 blogs.get("/blog/:id", getBlogById);
+blogs.get("/recent", getRecentBlogs);
 
 export default blogs;

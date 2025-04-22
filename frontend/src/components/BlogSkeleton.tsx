@@ -23,7 +23,7 @@ export const BlogSkeleton = () => {
           {/* Subtitle skeleton */}
           <div className="h-5 w-1/2 bg-gray-200 rounded animate-pulse"></div>
           <div className="h-5 w-2/3 bg-gray-200 rounded animate-pulse"></div>
-          
+
           {/* Content preview skeleton (3 lines) */}
           <div className="space-y-2 pt-1">
             {/* <div className="h-3 w-full bg-gray-200 rounded animate-pulse"></div> */}
@@ -48,25 +48,48 @@ export const BlogSkeleton = () => {
 
 export const RecentBlogsSkeleton = () => {
   return (
-    <div className="hidden lg:block w-full max-w-xs px-4">
-      {/* Title skeleton */}
-      <div className="h-6 w-3/5 bg-gray-200 rounded animate-pulse mb-4"></div>
-      
-      {/* List items skeleton */}
-      <ul className="space-y-3">
-        {[...Array(4)].map((_, index) => (
-          <li key={index} className="flex items-center">
-            {/* Bullet point skeleton */}
-            <div className="h-2 w-2 bg-gray-200 rounded-full mr-2 animate-pulse"></div>
-            {/* Text skeleton - random widths for more natural look */}
-            <div 
-              className={`h-3 bg-gray-200 rounded animate-pulse ${
-                index % 2 === 0 ? 'w-4/5' : 'w-3/5'
-              }`}
-            ></div>
-          </li>
-        ))}
-      </ul>
+    <div className="hidden lg:block w-full  max-w-xs px-4">
+      <h2 className="text-lg font-semibold mb-4 text-center">Recent Blogs</h2>
+      {/* <ul className="space-y-2 text-sm text-slate-700">
+      <li></li>
+      <li>How Tailwind CSS Works</li>
+      <li>Top 10 Web Dev Tools in 2024</li>
+      <li>Mastering Flex and Grid</li>
+    </ul> */}
+      {/* Content section skeleton image */}
+      <div className="flex flex-row-reverse space-x-4 mt-3">
+        {/* Image skeleton - hidden on mobile */}
+        <div className="flex-shrink-0 hidden sm:block">
+          <div className="w-50 h-40 bg-gray-200 rounded-lg animate-pulse"></div>
+        </div>
+      </div>
+      <div className="flex flex-row-reverse space-x-4 mt-3">
+        {/* Image skeleton - hidden on mobile */}
+        <div className="flex-shrink-0 hidden sm:block">
+          <div className="w-50 h-40 bg-gray-200 rounded-lg animate-pulse"></div>
+        </div>
+      </div>
+      <div className="flex flex-row-reverse space-x-4 mt-3">
+        {/* Image skeleton - hidden on mobile */}
+        <div className="flex-shrink-0 hidden sm:block">
+          <div className="w-50 h-40 bg-gray-200 rounded-lg animate-pulse"></div>
+        </div>
+      </div>
     </div>
   );
 };
+
+export const FullBlogLeftSkeletonLoader = () => (
+  <div className="space-y-8">
+    <div className="w-full h-10 bg-gray-300 animate-pulse rounded-md"></div>
+    <div className="w-3/4 h-6 bg-gray-200 animate-pulse rounded-md"></div>
+    <div className="w-full h-48 bg-gray-200 animate-pulse rounded-md"></div>
+  </div>
+);
+
+export const FullBlogRightSkeletonLoader = () => (
+  <div className="flex items-center space-x-4 ">
+    <div className=" ml-2 w-12 h-12 bg-gray-300 animate-pulse rounded-full"></div>
+    <div className="w-24 h-6 bg-gray-200 animate-pulse rounded-md"></div>
+  </div>
+);

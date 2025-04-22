@@ -142,62 +142,68 @@ export default function BlogEditor({
     const fileInput = document.createElement("input");
     fileInput.type = "file";
     fileInput.accept = "image/*";
-
+  
     fileInput.onchange = async (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (!file) return;
-
+  
       const previewUrl = URL.createObjectURL(file);
       const userConfirmed = await showImagePreviewDialog(previewUrl, file.name);
-
       if (!userConfirmed) return;
-
-      // Insert temporary loading image
-      const loaderId = `loading-${Date.now()}`;
-      const loaderSrc =
-        "https://miro.medium.com/v2/resize:fit:860/1*DCTub2EQMZIZtP5Y0hm0wQ.gif";
-
+  
+      // Insert placeholder loader with unique alt
+      const loaderId = `loader-${Date.now()}`;
+      const loaderSrc = "https://miro.medium.com/v2/resize:fit:860/1*DCTub2EQMZIZtP5Y0hm0wQ.gif";
+  
       contentEditor
         ?.chain()
         .focus()
         .setImage({ src: loaderSrc, alt: loaderId })
         .run();
-
-      // Upload to Cloudinary
+  
+      // Upload image to Cloudinary
       const formData = new FormData();
       formData.append("file", file);
       formData.append("upload_preset", "blog_editor_unsigned");
-
-      // Upload to Cloudinary
+  
       try {
-        const res = await fetch(
-          "https://api.cloudinary.com/v1_1/dr7nw3u0l/image/upload",
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
-
+        const res = await fetch("https://api.cloudinary.com/v1_1/dr7nw3u0l/image/upload", {
+          method: "POST",
+          body: formData,
+        });
+  
         const data = await res.json();
         const imageUrl = data.secure_url;
-
-        const html = contentEditor?.getHTML();
-        const cleanedHtml = html?.replace(
-          `<img src="${loaderSrc}" alt="${loaderId}">`,
-          `<img src="${imageUrl}" alt="${file.name}">`
-        );
-
-        if (cleanedHtml) {
-          contentEditor?.commands.setContent(cleanedHtml, false);
-        }
+  
+        // Replace the image with loaderId using Tiptap's transaction
+        contentEditor?.commands.command(({ tr, state }) => {
+          const { doc } = state;
+          let found = false;
+  
+          doc.descendants((node, pos) => {
+            if (node.type.name === "image" && node.attrs.alt === loaderId) {
+              tr.replaceWith(
+                pos,
+                pos + node.nodeSize,
+                state.schema.nodes.image.create({ src: imageUrl, alt: file.name })
+              );
+              found = true;
+              return false; // stop traversal
+            }
+            return true;
+          });
+  
+          return found;
+        });
       } catch (err) {
         console.error("Upload failed", err);
         alert("Upload failed. Try again.");
       }
     };
-
+  
     fileInput.click();
   };
+  
 
   const handlePreviewImageUpload = async () => {
     setIsUploadingPreviewImage(true); // Show modal loader

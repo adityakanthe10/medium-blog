@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Appbar } from "../components/Appbar";
 import { BlogCard } from "../components/blogscomponents/BlogCard";
 import { RecentBlogs } from "../components/blogscomponents/RecentBlogsCard";
@@ -6,7 +5,7 @@ import { BlogSkeleton, RecentBlogsSkeleton } from "../components/BlogSkeleton";
 import { useBlogs } from "../hooks";
 
 export const Blogs = () => {
-  const { loading, blogs } = useBlogs(); // ✅ Correct destructuring
+  const { loading, blogs } = useBlogs(); // Pass the required page number as an argument
 
   if (loading) {
     return (
@@ -18,6 +17,8 @@ export const Blogs = () => {
             {/* <div className="flex justify-center"> */}
             <div className="lg:col-span-4 space-y-10">
             <BlogSkeleton />
+            <BlogSkeleton />
+            {/* <BlogSkeleton /> */}
             </div>
             <RecentBlogsSkeleton />
           </div>

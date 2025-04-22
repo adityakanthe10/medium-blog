@@ -12,14 +12,12 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
   const cleanHTML = DOMPurify.sanitize(blog.content);
   // console.log(cleanHTML, "cleanHTML");
 
-  
-
   return (
     <div>
       <Appbar />
       <div>
         <div className="grid grid-cols-12 px-10 w-full max-w-screen-2xl pt-12">
-          <div className="col-span-8">
+          <div className="col-span-9">
             <div className="text-5xl font-extrabold">{blog.title}</div>
             <div className="text-slate-500 pt-2">Post on 2nd December 2023</div>
 
@@ -28,23 +26,24 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
               className="pt-6 text-slate-700 blog-html"
               dangerouslySetInnerHTML={{ __html: cleanHTML }}
             />
-                <br />
+            <br />
           </div>
 
           {/* Author Sidebar */}
-          <div className="col-span-4">
-            <div className="text-slate-600 text-lg">Author</div>
+          <div className="col-span-3">
+            {/* <div className="text-slate-600 text-lg ">Author</div> */}
             <div className="flex">
               <div className="pr-4 flex flex-col justify-center">
-                <Avatarprofile size="big" name={blog.author.name || "anonymous"} />
+                <Avatarprofile
+                  size="big"
+                  name={blog.author.name || "anonymous"}
+                />
               </div>
               <div>
                 <div className="text-xl font-bold">
                   {blog.author.name || "Anonymous"}
                 </div>
-                <div className="pt-2 text-slate-500">
-                
-                </div>
+                <div className="pt-2 text-slate-500"></div>
               </div>
             </div>
           </div>
@@ -54,7 +53,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
   );
 };
 
-export function Avatarprofile({ name, size = "small" }:AvatarProps) {
+export function Avatarprofile({ name, size = "small" }: AvatarProps) {
   const initial = name?.[0].toUpperCase() || "A";
   return (
     <div className="relative">
