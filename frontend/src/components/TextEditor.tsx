@@ -147,8 +147,8 @@ export default function BlogEditor({
       const file = (e.target as HTMLInputElement).files?.[0];
       if (!file) return;
   
-      const previewUrl = URL.createObjectURL(file);
-      const userConfirmed = await showImagePreviewDialog(previewUrl, file.name);
+      // const previewUrl = URL.createObjectURL(file);
+      const userConfirmed = await showImagePreviewDialog( file.name);
       if (!userConfirmed) return;
   
       // Insert placeholder loader with unique alt
@@ -247,7 +247,7 @@ export default function BlogEditor({
 
   // Shows a confirmation before inserting selected image
   const showImagePreviewDialog = (
-    fileName: string,
+    // fileName: string,
     name: string
   ): Promise<boolean> => {
     return new Promise((resolve) => {

@@ -23,11 +23,11 @@ export const createBlogAsync = createAsyncThunk(
       const token = localStorage.getItem("token") || "";
       return await createBlog(payload, token);
     } catch (err: unknown) {
-        if (err instanceof Error) {
-          return rejectWithValue((err as any)?.response?.data?.message || err.message);
-        }
-        return rejectWithValue("An unknown error occurred");
-      }
+      if (err instanceof Error) {
+        // If the error is an AxiosError (assuming Axios is used)
+        const error = err as Error & { response?: { data?: { message?: string } } };
+        return rejectWithValue(error.response?.data?.message || error.message);
+      }}
     }
 );
 
@@ -43,7 +43,7 @@ const createBlogSlice = createSlice({
       })
       .addCase(createBlogAsync.fulfilled, (state, action) => {
         state.loading = false;
-        state.blog = action.payload;
+        state.blog = action.payload ?? null;
       })
       .addCase(createBlogAsync.rejected, (state, action) => {
         state.loading = false;
